@@ -119,6 +119,8 @@ channel_color = "white"
 # Set to false to show messages with usernames instead of nicknames
 show_user_nicks = true
 show_user_colors = true
+# Show "only you can see this" with Discordo's internal messages
+show_internal_alerts = true
 reply_indicator = ">"
 forwarded_indicator = "<"
 author_color = "aqua"

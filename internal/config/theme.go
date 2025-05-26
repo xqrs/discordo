@@ -57,6 +57,7 @@ type (
 	MessagesTextTheme struct {
 		ShowNicknames      bool `toml:"show_user_nicks"`
 		ShowUsernameColors bool `toml:"show_user_colors"`
+		ShowInternalAlerts bool `toml:"show_internal_alerts"`
 
 		ReplyIndicator     string `toml:"reply_indicator"`
 		ForwardedIndicator string `toml:"forwarded_indicator"`

@@ -75,7 +75,18 @@ func (mi *MessageInput) send() {
 		return
 	}
 
-	text := strings.TrimSpace(mi.GetText())
+	text := mi.GetText()
+	if text[0] == '/' {
+		text = strings.TrimPrefix(text, "/")
+		if text == "" {
+			return
+		}
+		cmd := strings.Split(text, " ")
+		mi.slashCmd(cmd[0], cmd[1:])
+		return
+	}
+
+	text = strings.TrimSpace(text)
 	if text == "" {
 		return
 	}
@@ -103,6 +114,31 @@ func (mi *MessageInput) send() {
 
 	app.messagesText.Highlight()
 	app.messagesText.ScrollToEnd()
+}
+
+func (mi *MessageInput) slashCmd(cmd string, args []string) {
+	switch cmd {
+		case "echo":
+			sendInternal("echo: " + strings.Join(args, " "))
+
+		default:
+			sendInternal("Unknown command: " + cmd)
+	}
+
+	mi.replyMessageID = 0
+	mi.reset()
+
+	app.messagesText.Highlight()
+	app.messagesText.ScrollToEnd()
+}
+
+func sendInternal(txt string) {
+	app.messagesText.createMsg(discord.Message{
+		Type: discord.DefaultMessage,
+		Author: discord.User{ Username: "#internal#" },
+		Content: txt,
+		Timestamp: discord.NowTimestamp(),
+	})
 }
 
 func (mi *MessageInput) editor() {

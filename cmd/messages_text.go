@@ -131,6 +131,11 @@ func (mt *MessagesText) createMsg(msg discord.Message) {
 		} else {
 			mt.createDefaultMsg(msg)
 		}
+
+		if msg.Author.Username == "#internal#" && mt.cfg.Theme.MessagesText.ShowInternalAlerts {
+			fmt.Fprint(mt, "\n[red]> This is an internal message, only you can see it")
+		}
+
 	case discord.InlinedReplyMessage:
 		mt.createReplyMsg(msg)
 
