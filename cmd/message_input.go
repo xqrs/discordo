@@ -119,10 +119,10 @@ func (mi *MessageInput) send() {
 func (mi *MessageInput) slashCmd(cmd string, args []string) {
 	switch cmd {
 		case "echo":
-			sendInternal("echo: " + strings.Join(args, " "))
+			app.messagesText.displayInternalMsg("echo: " + strings.Join(args, " "), true)
 
 		default:
-			sendInternal("Unknown command: " + cmd)
+			app.messagesText.displayInternalMsg("Unknown command: " + cmd, false)
 	}
 
 	mi.replyMessageID = 0
@@ -132,14 +132,6 @@ func (mi *MessageInput) slashCmd(cmd string, args []string) {
 	app.messagesText.ScrollToEnd()
 }
 
-func sendInternal(txt string) {
-	app.messagesText.createMsg(discord.Message{
-		Type: discord.DefaultMessage,
-		Author: discord.User{ Username: "#internal#" },
-		Content: txt,
-		Timestamp: discord.NowTimestamp(),
-	})
-}
 
 func (mi *MessageInput) editor() {
 	e := mi.cfg.Editor

@@ -28,9 +28,10 @@ import (
 
 type MessagesText struct {
 	*tview.TextView
-	cfg               *config.Config
-	app               *tview.Application
-	selectedMessageID discord.MessageID
+	cfg                   *config.Config
+	app                   *tview.Application
+	selectedMessageID     discord.MessageID
+	lastMessageIsInternal bool
 
 	fetchingMembers struct {
 		mu    sync.Mutex
@@ -91,6 +92,7 @@ func (mt *MessagesText) drawMsgs(cID discord.ChannelID) {
 
 func (mt *MessagesText) reset() {
 	mt.selectedMessageID = 0
+	mt.lastMessageIsInternal = false
 	app.messageInput.replyMessageID = 0
 
 	mt.SetTitle("")
@@ -109,7 +111,26 @@ func (mt *MessagesText) endRegion() {
 	fmt.Fprint(mt, `[""]`)
 }
 
+func (mt *MessagesText) displayInternalMsg(txt string, success bool){
+	// Internal messages are non-selectable, they don't have a region
+	// TODO: make these as a config options
+	if mt.lastMessageIsInternal == false {
+		fmt.Fprint(mt, "-----------")
+		mt.lastMessageIsInternal = true
+	}
+	// Having a "\n" here instead of in the separater is intentional
+	if success {
+		fmt.Fprintf(mt, "\n[green::i]%s[-::-]", txt)
+	} else {
+		fmt.Fprintf(mt, "\n[red::i]%s[-::-]", txt)
+	}
+}
+
 func (mt *MessagesText) createMsg(msg discord.Message) {
+	if mt.lastMessageIsInternal {
+		fmt.Fprint(mt, "\n-----------\n")
+		mt.lastMessageIsInternal = false
+	}
 	mt.startRegion(msg.ID)
 	defer mt.endRegion()
 
@@ -130,10 +151,6 @@ func (mt *MessagesText) createMsg(msg discord.Message) {
 			mt.createForwardedMsg(msg)
 		} else {
 			mt.createDefaultMsg(msg)
-		}
-
-		if msg.Author.Username == "#internal#" && mt.cfg.Theme.MessagesText.ShowInternalAlerts {
-			fmt.Fprint(mt, "\n[red]> This is an internal message, only you can see it")
 		}
 
 	case discord.InlinedReplyMessage:
