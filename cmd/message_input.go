@@ -81,8 +81,14 @@ func (mi *MessageInput) send() {
 		if text == "" {
 			return
 		}
-		cmd := strings.Split(text, " ")
-		mi.slashCmd(cmd[0], cmd[1:])
+
+		app.messagesText.displayInternalMsg(handleCommand(text))
+
+		mi.replyMessageID = 0
+		mi.reset()
+		app.messagesText.Highlight()
+		app.messagesText.ScrollToEnd()
+
 		return
 	}
 
