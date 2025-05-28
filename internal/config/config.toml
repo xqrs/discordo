@@ -23,8 +23,7 @@ enabled = true
 only_on_ping = true
 
 # How Discord sees us.
-# status: "online", "idle", "dnd" (Do Not Disturb), "" (invisible),
-# note: does not seem to work
+# status: "online", "idle", "dnd" (Do Not Disturb), "invisible"
 [identify]
 status = "online"
 browser = "default"

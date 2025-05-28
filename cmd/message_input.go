@@ -82,10 +82,13 @@ func (mi *MessageInput) send() {
 			return
 		}
 
-		app.messagesText.displayInternalMsg(handleCommand(text))
+		text = handleCommand(text)
 
-		mi.replyMessageID = 0
-		mi.reset()
+		if text == "" {
+			mi.reset()
+		} else {
+			mi.SetText(text, true)
+		}
 		app.messagesText.Highlight()
 		app.messagesText.ScrollToEnd()
 
@@ -115,29 +118,11 @@ func (mi *MessageInput) send() {
 		}
 	}()
 
-	mi.replyMessageID = 0
 	mi.reset()
 
 	app.messagesText.Highlight()
 	app.messagesText.ScrollToEnd()
 }
-
-func (mi *MessageInput) slashCmd(cmd string, args []string) {
-	switch cmd {
-		case "echo":
-			app.messagesText.displayInternalMsg("echo: " + strings.Join(args, " "), true)
-
-		default:
-			app.messagesText.displayInternalMsg("Unknown command: " + cmd, false)
-	}
-
-	mi.replyMessageID = 0
-	mi.reset()
-
-	app.messagesText.Highlight()
-	app.messagesText.ScrollToEnd()
-}
-
 
 func (mi *MessageInput) editor() {
 	e := mi.cfg.Editor

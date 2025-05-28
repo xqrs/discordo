@@ -58,6 +58,10 @@ func (app *App) show(token string) error {
 			return err
 		}
 
+		if err := discordState.SetStatus(app.cfg.Identify.Status, nil); err != nil {
+			slog.Error("failed to set user status", "err", err)
+		}
+
 		app.init()
 		app.SetRoot(app.pages, true)
 	}

@@ -111,18 +111,20 @@ func (mt *MessagesText) endRegion() {
 	fmt.Fprint(mt, `[""]`)
 }
 
-func (mt *MessagesText) displayInternalMsg(txt string, failure bool){
+func (mt *MessagesText) displayInternalMsg(failure bool, f string, a ...any){
 	// Internal messages are non-selectable, they don't have a region
 	// TODO: make these as config options
 	if mt.lastMessageIsInternal == false {
 		fmt.Fprint(mt, "-----------")
 		mt.lastMessageIsInternal = true
 	}
-	// Having a "\n" here instead of in the separater is intentional
 	if failure {
-		fmt.Fprintf(mt, "\n[red::i]%s[-::-]", txt)
+		fmt.Fprint(mt, "\n[red::i]")
+		fmt.Fprintf(mt, f, a...)
+		fmt.Fprint(mt, "[-::-]")
 	} else {
-		fmt.Fprint(mt, "\n" + txt)
+		fmt.Fprint(mt, "\n")
+		fmt.Fprintf(mt, f, a...)
 	}
 }
 
