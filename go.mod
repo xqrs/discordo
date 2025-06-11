@@ -32,6 +32,7 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/tadvi/systray v0.0.0-20190226123456-11a2b8fa57af // indirect
 	github.com/twmb/murmur3 v1.1.8 // indirect
+	github.com/xqrs/tview v0.0.0-20250609063242-9a0f2168617e // indirect
 	go4.org v0.0.0-20230225012048-214862532bf5 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.32.0 // indirect

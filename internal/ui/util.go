@@ -2,7 +2,7 @@ package ui
 
 import (
 	"github.com/ayn2op/discordo/internal/config"
-	"github.com/ayn2op/tview"
+	"github.com/xqrs/tview"
 )
 
 func NewConfiguredBox(box *tview.Box, cfg *config.Theme) *tview.Box {

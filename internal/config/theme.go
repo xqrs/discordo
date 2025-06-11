@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/ayn2op/tview"
+	"github.com/xqrs/tview"
 	"github.com/gdamore/tcell/v2"
 )
 

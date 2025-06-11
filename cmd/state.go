@@ -6,7 +6,7 @@ import (
 	"runtime"
 
 	"github.com/ayn2op/discordo/internal/notifications"
-	"github.com/ayn2op/tview"
+	"github.com/xqrs/tview"
 	"github.com/diamondburned/arikawa/v3/api"
 	"github.com/diamondburned/arikawa/v3/gateway"
 	"github.com/diamondburned/arikawa/v3/utils/httputil/httpdriver"

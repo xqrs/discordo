@@ -7,7 +7,7 @@ import (
 	"github.com/ayn2op/discordo/internal/config"
 	"github.com/ayn2op/discordo/internal/consts"
 	"github.com/ayn2op/discordo/internal/ui"
-	"github.com/ayn2op/tview"
+	"github.com/xqrs/tview"
 	"github.com/diamondburned/arikawa/v3/api"
 	"github.com/zalando/go-keyring"
 )
