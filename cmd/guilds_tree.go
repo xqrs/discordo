@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log/slog"
+	"context"
 	"sort"
 
 	"github.com/ayn2op/discordo/internal/config"
@@ -181,7 +182,26 @@ func (gt *guildsTree) onSelected(node *tview.TreeNode) {
 		}
 
 		if guildID := channel.GuildID; guildID.IsValid() {
+			discordState.SendGateway(context.TODO(), &gateway.GuildSubscribeCommand{
+				GuildID:    guildID,
+				Typing:     true,
+				Threads:    true,
+				Activities: true,
+				Channels: map[discord.ChannelID][][2]int{
+					ref: [][2]int{[2]int{0, 99}},
+				},
+			})
 			app.messagesList.requestGuildMembers(guildID, messages)
+			// borrowing this to populate member based on guild selected
+			members, err := discordState.Cabinet.Members(guildID)
+			if err != nil {
+				slog.Error("failed to get guild members", "err", err, "guild_id", guildID)
+				app.memberTree.Update(guildID, ref, nil)
+			} else {
+				app.memberTree.Update(guildID, ref, members)
+			}
+		} else {
+			app.memberTree.Update(0, ref, nil)
 		}
 
 		app.messagesList.reset()

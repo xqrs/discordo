@@ -648,6 +648,7 @@ func (ml *messagesList) requestGuildMembers(gID discord.GuildID, ms []discord.Me
 		err := discordState.SendGateway(context.TODO(), &gateway.RequestGuildMembersCommand{
 			GuildIDs: []discord.GuildID{gID},
 			UserIDs:  slices.Compact(usersToFetch),
+			Presences: true,
 		})
 		if err != nil {
 			slog.Error("failed to request guild members", "guild_id", gID, "err", err)

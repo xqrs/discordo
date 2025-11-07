@@ -43,6 +43,7 @@ func openState(token string) error {
 	discordState.AddHandler(onMessageUpdate)
 	discordState.AddHandler(onMessageDelete)
 	discordState.AddHandler(onReadUpdate)
+	discordState.AddHandler(onPresenceUpdate)
 
 	discordState.AddHandler(func(event *gateway.GuildMembersChunkEvent) {
 		app.messagesList.setFetchingChunk(false, uint(len(event.Members)))
@@ -174,4 +175,14 @@ func onMessageDelete(message *gateway.MessageDeleteEvent) {
 		app.messagesList.drawMessages(messages)
 		app.Draw()
 	}
+}
+
+func onPresenceUpdate(presence *gateway.PresenceUpdateEvent) {
+	membs, err := discordState.Cabinet.Members(app.guildsTree.selectedGuildID)
+	if err != nil {
+		slog.Error("Cannot get members", "guild", app.guildsTree.selectedGuildID)
+		return
+	}
+	app.memberTree.Update(app.guildsTree.selectedGuildID,
+		app.guildsTree.selectedChannelID, membs)
 }
