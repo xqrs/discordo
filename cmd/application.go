@@ -211,6 +211,11 @@ func (a *application) onError(msg string, err error, info ...any) {
 }
 
 func (a *application) showModal(title, prompt string, buttons []string, onDone func(label string)) {
+	// App is not ready yet. Don't show anything.
+	if a == nil {
+		return
+	}
+
 	previousFocus := a.GetFocus()
 
 	modal := tview.NewModal()
